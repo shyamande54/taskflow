@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TaskFlow · Kanban board</title>
+  <meta name="description" content="A fast, offline-first Kanban board. No framework, no build step." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">📋</span>
+      <h1>TaskFlow</h1>
+    </div>
+    <div class="tools">
+      <input id="search" type="search" placeholder="Search tasks…  ( / )" aria-label="Search tasks" />
+      <select id="filter" aria-label="Filter by priority">
+        <option value="all">All priorities</option>
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+      </select>
+      <button id="export" class="ghost" title="Export board as JSON">Export</button>
+      <label class="ghost button" title="Import board from JSON">
+        Import<input id="import" type="file" accept="application/json" hidden />
+      </label>
+      <button id="theme" class="ghost" title="Toggle theme" aria-label="Toggle theme">🌓</button>
+      <button id="new" class="primary">+ New task</button>
+    </div>
+  </header>
+
+  <section class="stats" id="stats" aria-live="polite"></section>
+
+  <main class="board" id="board"></main>
+
+  <dialog id="dialog">
+    <form method="dialog" id="form">
+      <h2 id="dialog-title">New task</h2>
+      <label>Title<input name="title" required maxlength="120" autocomplete="off" /></label>
+      <label>Description<textarea name="description" rows="3" maxlength="600"></textarea></label>
+      <div class="row">
+        <label>Priority
+          <select name="priority">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+        </label>
+        <label>Due date<input name="due" type="date" /></label>
+        <label>Column
+          <select name="column">
+            <option value="todo">To do</option>
+            <option value="doing">In progress</option>
+            <option value="done">Done</option>
+          </select>
+        </label>
+      </div>
+      <div class="actions">
+        <button type="button" id="delete" class="danger" hidden>Delete</button>
+        <span class="spacer"></span>
+        <button value="cancel" formnovalidate class="ghost">Cancel</button>
+        <button value="save" class="primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <template id="card-tpl">
+    <article class="card" draggable="true" tabindex="0">
+      <div class="card-head">
+        <span class="badge"></span>
+        <span class="due"></span>
+      </div>
+      <h3></h3>
+      <p></p>
+    </article>
+  </template>
+
+  <footer class="foot">Data stays in your browser (localStorage). · <kbd>N</kbd> new task · <kbd>/</kbd> search</footer>
+
+  <script src="app.js" type="module"></script>
+</body>
+</html>
